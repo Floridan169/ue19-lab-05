@@ -1,4 +1,4 @@
-name: ue19 Labo5 - Build and Publish Docker Image
+name: UE19 Labo5 - Build and Publish Docker Image
 
 on:
   push:
@@ -10,20 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 1. Récupérer le code
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      # 2. Se connecter à GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build Docker image
-      run: |
-        docker build -t ghcr.io/floridan169/ue19-lab-05:latest .
-    
-    - name: Push Docker image
-      run: |
-        docker push ghcr.io/floridan169/ue19-lab-05:latest
+      # 3. Builder l'image Docker
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/floridan169/ue19-lab-05:latest .
+
+      # 4. Pousser l'image Docker sur GitHub Packages
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/floridan169/ue19-lab-05:latest
